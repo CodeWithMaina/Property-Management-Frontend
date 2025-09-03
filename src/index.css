@@ -1,0 +1,23 @@
+/* -------- LIGHT THEME -------- */
+:root {
+  --color-background: 255 255 255;       /* #FFFFFF */
+  --color-surface: 243 244 246;          /* #F3F4F6 */
+  --color-primary: 10 26 47;             /* #0A1A2F */
+  --color-success: 15 81 50;             /* #0F5132 */
+  --color-error: 179 58 58;              /* #B33A3A */
+  --color-border: 229 231 235;           /* #E5E7EB */
+  --color-text-primary: 17 24 39;        /* #111827 */
+  --color-text-secondary: 107 114 128;   /* #6B7280 */
+}
+
+/* -------- DARK THEME -------- */
+.dark {
+  --color-background: 10 15 28;          /* #0A0F1C */
+  --color-surface: 28 37 51;             /* #1C2533 */
+  --color-primary: 58 79 122;            /* #3A4F7A */
+  --color-success: 34 197 94;            /* #22C55E */
+  --color-error: 239 68 68;              /* #EF4444 */
+  --color-border: 55 65 81;              /* #374151 */
+  --color-text-primary: 249 250 251;     /* #F9FAFB */
+  --color-text-secondary: 156 163 175;   /* #9CA3AF */
+}
