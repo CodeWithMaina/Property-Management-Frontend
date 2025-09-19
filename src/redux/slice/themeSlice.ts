@@ -1,45 +1,57 @@
-// src/store/themeSlice.ts
+// src/redux/slice/themeSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type Theme = "light" | "dark";
+export type ThemeMode = "light" | "dark" | "system";
+export type ResolvedThemeMode = "light" | "dark";
 
 interface ThemeState {
-  mode: Theme;
+  mode: ThemeMode;
+  resolvedMode: ResolvedThemeMode;
 }
 
-const getInitialTheme = (): Theme => {
-  const saved = localStorage.getItem("theme") as Theme | null;
-  if (saved) return saved;
+// Helper to get system theme
+export const getSystemTheme = (): ResolvedThemeMode => {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
 
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
+// Helper to persist theme to localStorage
+const persistTheme = (mode: ThemeMode) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("theme", mode);
+  }
+};
+
+// Helper to load theme from localStorage
+const loadTheme = (): ThemeMode => {
+  if (typeof window === "undefined") return "system";
+  return (localStorage.getItem("theme") as ThemeMode) || "system";
 };
 
 const initialState: ThemeState = {
-  mode: getInitialTheme(),
+  mode: loadTheme(),
+  resolvedMode: loadTheme() === "system" ? getSystemTheme() : (loadTheme() as ResolvedThemeMode),
 };
 
 const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    setTheme: (state, action: PayloadAction<Theme>) => {
+    setTheme: (state, action: PayloadAction<ThemeMode>) => {
       state.mode = action.payload;
-      localStorage.setItem("theme", action.payload);
-      document.documentElement.classList.toggle("dark", action.payload === "dark");
+      state.resolvedMode = action.payload === "system" ? getSystemTheme() : (action.payload as ResolvedThemeMode);
+      persistTheme(action.payload);
     },
     toggleTheme: (state) => {
-      const newTheme = state.mode === "light" ? "dark" : "light";
-      state.mode = newTheme;
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.classList.toggle("dark", newTheme === "dark");
+      const newMode = state.resolvedMode === "light" ? "dark" : "light";
+      state.mode = newMode;
+      state.resolvedMode = newMode;
+      persistTheme(newMode);
     },
-    syncSystemTheme: (state, action: PayloadAction<Theme>) => {
-      // Only update if user has not explicitly set a theme
-      const saved = localStorage.getItem("theme");
-      if (!saved) {
-        state.mode = action.payload;
-        document.documentElement.classList.toggle("dark", action.payload === "dark");
+    syncSystemTheme: (state) => {
+      // Only update resolved mode if user preference is set to "system"
+      if (state.mode === "system") {
+        state.resolvedMode = getSystemTheme();
       }
     },
   },

@@ -1,6 +1,8 @@
+// src/App.tsx
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Provider, useSelector } from "react-redux";
 import { useSystemThemeSync } from "./hooks/useSystemThemeSync";
+import { useEffect } from "react";
 
 import "./App.css";
 
@@ -18,11 +20,40 @@ import { Reports } from "./Dashboard/pages/Admin/Reports";
 import { Payments } from "./Dashboard/pages/Admin/Payments";
 import { store, type RootState } from "./redux/store/store";
 
+/**
+ * Component that applies the current theme to the document
+ * This ensures proper theming for all components including third-party libraries
+ */
+// src/App.tsx - ThemeApplier component
+function ThemeApplier() {
+  const resolvedTheme = useSelector((state: RootState) => state.theme.resolvedMode);
+
+  useEffect(() => {
+    // Apply theme to document element for CSS variable usage
+    document.documentElement.setAttribute("data-theme", resolvedTheme);
+    
+    // Also set theme-color meta tag for mobile browsers
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute(
+        "content", 
+        resolvedTheme === "dark" ? "#111827" : "#ffffff"
+      );
+    } else {
+      // Create the meta tag if it doesn't exist
+      const meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      meta.content = resolvedTheme === "dark" ? "#111827" : "#ffffff";
+      document.head.appendChild(meta);
+    }
+  }, [resolvedTheme]);
+
+  return null;
+}
+
 function AppContent() {
   // Auto-sync with system theme
   useSystemThemeSync();
-
-  const theme = useSelector((state: RootState) => state.theme.mode);
 
   const router = createBrowserRouter([
     {
@@ -47,8 +78,9 @@ function AppContent() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 
-      ${theme === "dark" ? "dark bg-dark-background text-dark-text-primary" : "bg-light-background text-light-text-primary"}`}
+        bg-background text-text-primary`}
     >
+      <ThemeApplier />
       <RouterProvider router={router} />
     </div>
   );

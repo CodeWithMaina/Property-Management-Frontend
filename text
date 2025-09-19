@@ -1,1 +1,104 @@
-Using React, Typescript, Lucide Icon, DaisyUI, TailwindCSS, React Hot Toast, Sonner, Redux, SweetAlert, Redux, framer-motion, React Router, React Router Dom. With support of dark mode and light mode. Use Shadcn components as first priority Strongly type the code. Well document the code. Handle logic in the most efficient way possible.Use the colors and font sizes provided. Make it mobile responsive first then generall smooth responsiveness.  Use Latest technology only.  Create a 
+You are a professional UI/UX engineer tasked with building a responsive SaaS dashboard page for a Kenyan real estate management SaaS. Use React with TypeScript, TailwindCSS, DaisyUI, and Lucide icons. Follow the production-ready design system provided below.
+
+🎨 Design System (Colors, Theming, Typography, Spacing)
+Color System (60/30/10 rule)
+
+Primary (60% - Base UI/Backgrounds)
+Light: #F5F6F7 (soft cool gray)
+Dark: #1B1F24 (deep muted charcoal)
+
+Secondary (30% - Surfaces, Cards, SideNav)
+
+Light: #FFFFFF (off-white)
+Dark: #242A31 (muted slate)
+Accent (10% - Highlights, Actions, CTAs)
+Both: #D32F2F (muted red for strong action, resonates with urgency & Kenya’s bold aesthetic)
+
+Support Colors
+
+Success: #2E7D32 (green-700) | Hover: #256628 | Muted: #E8F5E9 (light) / #1B3120 (dark)
+Warning: #ED6C02 (amber-700) | Hover: #C05601 | Muted: #FFF4E5 (light) / #3D2A14 (dark)
+Error: #C62828 (red-700) | Hover: #8B1C1C | Muted: #FDECEA (light) / #3B0D0D (dark)
+Info: #0288D1 (blue-600) | Hover: #02679C | Muted: #E1F5FE (light) / #102A3A (dark)
+
+Navigation (SideNav)
+
+Light: #FFFFFF with hover #F0F2F5 and active #D32F2F (accent)
+Dark: #1F252C with hover #2A3139 and active #D32F2F (accent)
+
+Borders
+
+Light: Muted Gray #E0E0E0
+Dark: Muted Slate #2F3540
+
+Text
+
+Light:
+
+Primary: #212121 (charcoal)
+Secondary: #424242 (muted gray)
+Muted: #757575 (cool gray)
+Inverse: #FFFFFF
+
+Dark:
+
+Primary: #F5F5F5 (soft white)
+Secondary: #BDBDBD (muted light gray)
+Muted: #9E9E9E (cool gray)
+Inverse: #000000
+
+Disabled
+
+Light: bg #E0E0E0, text #9E9E9E
+Dark: bg #2F3540, text #757575
+
+📝 Typography
+
+Font Family:
+Headings → Inter, sans-serif (professional, modern)
+Body → Source Sans Pro, sans-serif (clean, readable)
+
+Font Sizes & Weights:
+
+H1: text-3xl md:text-4xl font-bold
+H2: text-2xl md:text-3xl font-semibold
+H3: text-xl font-semibold
+Body Large: text-base md:text-lg leading-relaxed
+Body Small: text-sm text-muted
+Line Height & Spacing:
+Line height: leading-relaxed for body, leading-snug for headings
+Spacing: p-4 for sections, p-6 for cards, gap-4 between components
+
+📐 Layout Rules
+
+Use CSS grid or flexbox for responsiveness.
+Side Navigation: Collapsible, with icons and labels, highlight active route.
+Content Area: Fluid, uses spacing & cards with shadows.
+Dark Mode Support: Uses [data-theme="dark"] toggle.
+
+🔧 Component Guidelines
+
+Buttons:
+
+Primary: bg-accent text-white hover:bg-accent-hover
+Secondary: bg-surface hover:bg-surface-hover border border-border
+Cards: Rounded xl, shadow md, background from secondary color.
+Tables: Striped rows, hover states, responsive.
+Forms: Rounded inputs, focus rings with accent color.
+Alerts: Use success/warning/error/info colors with subtle backgrounds.
+
+🚀 Instructions for Page Generation
+
+When generating a new page, always:
+Import Tailwind + DaisyUI classes.
+Apply color tokens (bg-primary, text-secondary, border-muted, etc.).
+Use consistent typography system.
+Respect 60/30/10 rule (primary background, secondary surfaces, accent CTAs).
+Ensure dark/light theme compatibility.
+Include responsive design (grid-cols-1 md:grid-cols-2 lg:grid-cols-3).
+Keep spacing system consistent (p-4, gap-4, rounded-xl).
+Add hover, focus, disabled states for interactive components.
+It should be very responsive, mobile first responsive and still responsive across all the platforms.
+
+
+"Generate a Property Listings Page with a table of properties (name, type, location, rent, status), a filter/search bar at the top, and an “Add Property” button. Follow the above design system strictly."

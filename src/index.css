@@ -1,23 +1,261 @@
-/* -------- LIGHT THEME -------- */
-:root {
-  --color-background: 255 255 255;       /* #FFFFFF */
-  --color-surface: 243 244 246;          /* #F3F4F6 */
-  --color-primary: 10 26 47;             /* #0A1A2F */
-  --color-success: 15 81 50;             /* #0F5132 */
-  --color-error: 179 58 58;              /* #B33A3A */
-  --color-border: 229 231 235;           /* #E5E7EB */
-  --color-text-primary: 17 24 39;        /* #111827 */
-  --color-text-secondary: 107 114 128;   /* #6B7280 */
+@import "tailwindcss";
+
+/* ========================
+   Color variables (Light + Dark)
+   ======================== */
+
+/* Light theme defaults (dominant 60% = background) */
+:root,
+[data-theme="light"] {
+  /* Backgrounds */
+  --color-background: 249 250 251;    /* very light warm gray (60%) */
+  --color-surface: 244 246 247;       /* surface / cards (30%) */
+  --color-surface-muted: 250 250 250;
+  --color-surface-hover: 238 242 243;
+
+  /* Brand primary (accent 10%) - muted teal */
+  --color-primary: 12 97 92;         /* muted teal */
+  --color-primary-hover: 9 78 74;
+  --color-primary-muted: 224 242 241;
+
+  /* Secondary accent - terracotta */
+  --color-accent2: 177 95 72;
+  --color-accent2-hover: 153 76 59;
+  --color-accent2-muted: 252 237 233;
+
+  /* Neutral / text */
+  --color-neutral: 17 24 39;
+  --color-neutral-muted: 75 85 99;
+  --color-neutral-hover: 23 23 23;
+
+  /* Support / state */
+  --color-success: 22 163 74;
+  --color-success-hover: 21 128 61;
+  --color-success-muted: 220 252 231;
+
+  --color-error: 185 28 28;
+  --color-error-hover: 153 24 24;
+  --color-error-muted: 254 202 202;
+
+  --color-warning: 161 98 7;
+  --color-warning-hover: 133 77 4;
+  --color-warning-muted: 255 249 231;
+
+  --color-info: 3 105 161;
+  --color-info-hover: 2 81 125;
+  --color-info-muted: 224 242 254;
+
+  /* Borders */
+  --color-border: 226 232 240;
+  --color-border-strong: 156 163 175;
+  --color-border-muted: 245 247 248;
+  --color-border-hover: 148 163 184;
+
+  /* Text */
+  --color-text-primary: 17 24 39;
+  --color-text-secondary: 63 72 83;
+  --color-text-muted: 107 114 128;
+  --color-text-subtle: 148 163 184;
+  --color-text-inverse: 255 255 255;
+
+  /* Disabled / focus */
+  --color-disabled: 229 231 235;
+  --color-disabled-text: 156 163 175;
+  --color-focus: 59 130 246;
 }
 
-/* -------- DARK THEME -------- */
-.dark {
-  --color-background: 10 15 28;          /* #0A0F1C */
-  --color-surface: 28 37 51;             /* #1C2533 */
-  --color-primary: 58 79 122;            /* #3A4F7A */
-  --color-success: 34 197 94;            /* #22C55E */
-  --color-error: 239 68 68;              /* #EF4444 */
-  --color-border: 55 65 81;              /* #374151 */
-  --color-text-primary: 249 250 251;     /* #F9FAFB */
-  --color-text-secondary: 156 163 175;   /* #9CA3AF */
+/* Dark theme overrides (swap backgrounds / surfaces etc.) */
+[data-theme="dark"] {
+  --color-background: 16 20 25;
+  --color-surface: 24 28 33;
+  --color-surface-muted: 34 39 46;
+  --color-surface-hover: 40 46 55;
+
+  --color-primary: 50 150 142;
+  --color-primary-hover: 40 120 113;
+  --color-primary-muted: 17 57 53;
+
+  --color-accent2: 196 116 91;
+  --color-accent2-hover: 170 97 76;
+  --color-accent2-muted: 72 33 25;
+
+  --color-neutral: 245 248 250;
+  --color-neutral-muted: 203 213 225;
+  --color-neutral-hover: 234 238 244;
+
+  --color-success: 34 197 94;
+  --color-success-hover: 22 163 74;
+  --color-success-muted: 10 42 21;
+
+  --color-error: 248 113 113;
+  --color-error-hover: 239 68 68;
+  --color-error-muted: 78 24 24;
+
+  --color-warning: 234 179 8;
+  --color-warning-hover: 202 138 4;
+  --color-warning-muted: 88 46 10;
+
+  --color-info: 56 189 248;
+  --color-info-hover: 2 132 199;
+  --color-info-muted: 7 30 41;
+
+  --color-border: 38 46 56;
+  --color-border-strong: 60 71 86;
+  --color-border-muted: 24 28 33;
+  --color-border-hover: 80 92 112;
+
+  --color-text-primary: 243 244 246;
+  --color-text-secondary: 209 213 219;
+  --color-text-muted: 156 163 175;
+  --color-text-subtle: 107 114 128;
+  --color-text-inverse: 0 0 0;
+
+  --color-disabled: 55 65 81;
+  --color-disabled-text: 99 113 131;
+  --color-focus: 96 165 250;
 }
+
+/* ========================
+   Base utilities & typography
+   ======================== */
+
+/* Import fonts in your index.html or use @import here (Inter & Merriweather via Google Fonts example):
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet"> */
+
+:root {
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+}
+
+/* Base HTML */
+html {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 16px; /* base */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: rgb(var(--color-text-primary) / 1);
+  background: rgb(var(--color-background) / 1);
+}
+
+/* Body base spacing & soft antialiasing */
+body {
+  line-height: 1.5;
+  margin: 0;
+  background: inherit;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings: use serif for contrast */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Merriweather", Georgia, serif;
+  color: rgb(var(--color-text-primary) / 1);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* Heading sizes */
+h1 { font-size: 2.25rem; }   /* 36px */
+h2 { font-size: 1.75rem; }   /* 28px */
+h3 { font-size: 1.375rem; }  /* 22px */
+h4 { font-size: 1.125rem; }  /* 18px */
+h5 { font-size: 1rem; }      /* 16px */
+h6 { font-size: 0.875rem; }  /* 14px */
+
+/* Paragraph / small / lead */
+p { margin: 0 0 1rem 0; font-size: 1rem; color: rgb(var(--color-text-secondary) / 1); }
+.lead { font-size: 1.125rem; color: rgb(var(--color-text-primary) / 1); }
+
+/* Links / interactive */
+a {
+  color: rgb(var(--color-primary) / 1);
+  text-decoration: none;
+}
+a:hover { color: rgb(var(--color-primary-hover) / 1); text-decoration: underline; }
+
+/* Buttons (basic utility example) */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: .5rem;
+  padding: .5rem .875rem;
+  border-radius: .5rem;
+  font-weight: 600;
+  background: rgb(var(--color-primary) / 1);
+  color: rgb(var(--color-text-inverse) / 1);
+  border: 1px solid rgba(0,0,0,0); /* no strong border by default */
+}
+.btn:hover { background: rgb(var(--color-primary-hover) / 1); }
+
+/* Disabled state utility */
+.is-disabled, .btn:disabled {
+  background: rgb(var(--color-disabled) / 1);
+  color: rgb(var(--color-disabled-text) / 1);
+  cursor: not-allowed;
+  opacity: .95;
+}
+
+/* Cards / surfaces */
+.card {
+  background: rgb(var(--color-surface) / 1);
+  border: 1px solid rgb(var(--color-border) / 1);
+  border-radius: .75rem;
+  box-shadow: 0 6px 18px -6px rgba(17,24,39,0.08);
+  padding: 1rem;
+}
+
+/* Subtle hover for surfaces */
+.card:hover { background: rgb(var(--color-surface-hover) / 1); }
+
+/* Focus ring utility */
+:focus {
+  outline: 2px solid rgb(var(--color-focus) / 0.15);
+  box-shadow: 0 0 0 4px rgb(var(--color-focus) / 0.12);
+  border-radius: .375rem;
+}
+
+/* Side navigation recommended classes (example) */
+.side-nav {
+  width: 260px;
+  background: rgb(var(--color-surface) / 1);  /* nav = surface (30%) */
+  border-right: 1px solid rgb(var(--color-border) / 1);
+  color: rgb(var(--color-text-secondary) / 1);
+  padding: 12px;
+}
+.side-nav a {
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  padding: 10px;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration:none;
+}
+.side-nav a:hover { background: rgb(var(--color-surface-hover) / 1); }
+.side-nav a.active {
+  background: rgba(var(--color-primary) / 0.08); /* subtle primary-tinted surface */
+  color: rgb(var(--color-primary) / 1);
+  box-shadow: inset 4px 0 0 0 rgb(var(--color-primary) / 1); /* left accent */
+}
+
+/* Utility: muted text */
+.text-muted { color: rgb(var(--color-text-muted) / 1); font-size: .9375rem; }
+
+/* Responsive typography (simple example) */
+@media (min-width: 768px) {
+  html { font-size: 17px; }
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+}
+
+/* Small helpers for states */
+.badge-success { background: rgb(var(--color-success-muted) / 1); color: rgb(var(--color-success) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
+.badge-error   { background: rgb(var(--color-error-muted) / 1);   color: rgb(var(--color-error) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
+.badge-warning { background: rgb(var(--color-warning-muted) / 1); color: rgb(var(--color-warning) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
+.badge-info    { background: rgb(var(--color-info-muted) / 1);    color: rgb(var(--color-info) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
+
+/* End of styles.css */

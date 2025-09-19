@@ -1,14 +1,14 @@
-import { Plus, ToolCaseIcon } from "lucide-react";
+import { Plus, Briefcase } from "lucide-react";
 import Button from "../../components/ui/Button";
 import { PaymentStatusStatsCard } from "../../components/units/PaymentStatusStatsCard";
 import { UnitStatusStatsCard } from "../../components/units/UnitStatusStatsCard";
 
 export const Units = () => {
   const sample = [
-    { name: "Occupied", value: 40, color: "#2563EB" },
-    { name: "Vacant", value: 25, color: "#16A34A" },
-    { name: "Reserved", value: 10, color: "#F59E0B" },
-    { name: "Unavailable", value: 10, color: "#F59E1B" },
+    { name: "Occupied", value: 40, color: "rgb(var(--color-primary))" },
+    { name: "Vacant", value: 25, color: "rgb(var(--color-success))" },
+    { name: "Reserved", value: 10, color: "rgb(var(--color-error))" },
+    { name: "Unavailable", value: 10, color: "rgb(var(--color-text-secondary))" },
   ];
 
   const stats = [
@@ -18,41 +18,46 @@ export const Units = () => {
     { value: 10, label: "Unavailable" },
   ];
 
-  const handleCreateUnit = async () => {
+  const handleCreateUnit = () => {
     alert("Create Unit action");
   };
-  const handleTooltip = async () => {
+
+  const handleTooltip = () => {
     alert("Tooltip action");
   };
+
   return (
-    <div className="flex flex-wrap gap-6">
-      <div className="p-4">
+    <div className="flex flex-col gap-8">
+      {/* Status Overview */}
+      <div className="w-full p-4 bg-surface rounded-xl border border-border">
         <UnitStatusStatsCard
           data={sample}
           stats={stats}
           height={240}
-          totalValue={75}
+          totalValue={85}
         />
       </div>
+
+      {/* Payment Stats */}
       <div className="flex flex-wrap gap-6">
         <PaymentStatusStatsCard
           title="Paid"
           value={41}
-          color="rgb(34 197 94)"
+          color="rgb(var(--color-success))"
           width="8rem"
           height="10rem"
-          // className="md:min-w-[18rem]" // Optional Tailwind overrides
         />
         <PaymentStatusStatsCard
           title="Not Paid"
           value={10}
-          color="rgb(34 197 94)"
+          color="rgb(var(--color-error))"
           width="8rem"
           height="10rem"
-          // className="md:min-w-[18rem]" // Optional Tailwind overrides
         />
       </div>
-      <div className="flex flex-row gap-4 mt-8 md:flex-col">
+
+      {/* Actions */}
+      <div className="flex flex-row gap-4 mt-4 md:flex-col">
         <Button
           title="Save"
           onAction={handleCreateUnit}
@@ -63,7 +68,7 @@ export const Units = () => {
         <Button
           title="Delete"
           onAction={handleTooltip}
-          leftIcon={ToolCaseIcon}
+          leftIcon={Briefcase}
           variant="outline"
           className="h-10"
         />

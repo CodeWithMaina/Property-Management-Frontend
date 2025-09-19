@@ -6,6 +6,13 @@ export const store = configureStore({
   reducer: {
     theme: themeReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types for serializability check
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
