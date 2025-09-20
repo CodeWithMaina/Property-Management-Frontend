@@ -18,8 +18,10 @@ const config: ExtendedConfig = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial'],
-        serif: ['Merriweather', 'Georgia', 'serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
       },
+
+      /* Map CSS variables into Tailwind */
       colors: {
         background: "rgb(var(--color-background) / <alpha-value>)",
         surface: {
@@ -34,16 +36,10 @@ const config: ExtendedConfig = {
           muted: "rgb(var(--color-primary-muted) / <alpha-value>)",
         },
 
-        accent2: {
-          DEFAULT: "rgb(var(--color-accent2) / <alpha-value>)",
-          hover: "rgb(var(--color-accent2-hover) / <alpha-value>)",
-          muted: "rgb(var(--color-accent2-muted) / <alpha-value>)",
-        },
-
         neutral: {
           DEFAULT: "rgb(var(--color-neutral) / <alpha-value>)",
-          muted: "rgb(var(--color-neutral-muted) / <alpha-value>)",
           hover: "rgb(var(--color-neutral-hover) / <alpha-value>)",
+          muted: "rgb(var(--color-neutral-muted) / <alpha-value>)",
         },
 
         success: {
@@ -51,15 +47,15 @@ const config: ExtendedConfig = {
           hover: "rgb(var(--color-success-hover) / <alpha-value>)",
           muted: "rgb(var(--color-success-muted) / <alpha-value>)",
         },
-        error: {
-          DEFAULT: "rgb(var(--color-error) / <alpha-value>)",
-          hover: "rgb(var(--color-error-hover) / <alpha-value>)",
-          muted: "rgb(var(--color-error-muted) / <alpha-value>)",
-        },
         warning: {
           DEFAULT: "rgb(var(--color-warning) / <alpha-value>)",
           hover: "rgb(var(--color-warning-hover) / <alpha-value>)",
           muted: "rgb(var(--color-warning-muted) / <alpha-value>)",
+        },
+        error: {
+          DEFAULT: "rgb(var(--color-error) / <alpha-value>)",
+          hover: "rgb(var(--color-error-hover) / <alpha-value>)",
+          muted: "rgb(var(--color-error-muted) / <alpha-value>)",
         },
         info: {
           DEFAULT: "rgb(var(--color-info) / <alpha-value>)",
@@ -78,7 +74,6 @@ const config: ExtendedConfig = {
           primary: "rgb(var(--color-text-primary) / <alpha-value>)",
           secondary: "rgb(var(--color-text-secondary) / <alpha-value>)",
           muted: "rgb(var(--color-text-muted) / <alpha-value>)",
-          subtle: "rgb(var(--color-text-subtle) / <alpha-value>)",
           inverse: "rgb(var(--color-text-inverse) / <alpha-value>)",
         },
 
@@ -86,29 +81,69 @@ const config: ExtendedConfig = {
           DEFAULT: "rgb(var(--color-disabled) / <alpha-value>)",
           text: "rgb(var(--color-disabled-text) / <alpha-value>)",
         },
+
         focus: "rgb(var(--color-focus) / <alpha-value>)",
       },
 
-      // typography sizes for Tailwind utilities (optional)
       fontSize: {
-        xs: ['0.75rem', { lineHeight: '1rem' }],    // 12px
-        sm: ['0.875rem', { lineHeight: '1.25rem' }],// 14px
-        base: ['1rem', { lineHeight: '1.5rem' }],   // 16px
-        lg: ['1.125rem', { lineHeight: '1.5rem' }], // 18px
-        xl: ['1.25rem', { lineHeight: '1.35rem' }], // 20px
-        '2xl': ['1.5rem', { lineHeight: '1.2' }],   // 24px
-        '3xl': ['1.875rem', { lineHeight: '1.15' }],// 30px
-        '4xl': ['2.25rem', { lineHeight: '1.1' }],  // 36px
+        xs: ['0.75rem', { lineHeight: '1rem' }],
+        sm: ['0.875rem', { lineHeight: '1.25rem' }],
+        base: ['1rem', { lineHeight: '1.5rem' }],
+        lg: ['1.125rem', { lineHeight: '1.5rem' }],
+        xl: ['1.25rem', { lineHeight: '1.35rem' }],
+        '2xl': ['1.5rem', { lineHeight: '1.2' }],
+        '3xl': ['1.875rem', { lineHeight: '1.15' }],
+        '4xl': ['2.25rem', { lineHeight: '1.1' }],
+        '5xl': ['3rem', { lineHeight: '1' }],
+        '6xl': ['3.75rem', { lineHeight: '1' }],
       },
 
-      // subtle shadows for elevated surfaces
+      spacing: {
+        px: '1px',
+        0: '0',
+        1: '0.25rem',
+        2: '0.5rem',
+        3: '0.75rem',
+        4: '1rem',
+        5: '1.25rem',
+        6: '1.5rem',
+        8: '2rem',
+        10: '2.5rem',
+        12: '3rem',
+        16: '4rem',
+        20: '5rem',
+        24: '6rem',
+        32: '8rem',
+      },
+
+      borderRadius: {
+        none: '0',
+        sm: '0.125rem',
+        DEFAULT: '0.25rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        full: '9999px',
+      },
+
       boxShadow: {
-        'surface-sm': '0 1px 2px 0 rgba(17,24,39,0.04)',
-        'surface-md': '0 6px 18px -6px rgba(17,24,39,0.12)',
+        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        DEFAULT: '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+        md: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+        lg: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)',
+        xl: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+        '2xl': '0 25px 50px -12px rgba(0,0,0,0.25)',
+      },
+
+      transitionDuration: {
+        fast: '150ms',
+        base: '250ms',
+        slow: '350ms',
       },
     },
   },
-
   plugins: [daisyui],
   daisyui: { themes: false },
 };

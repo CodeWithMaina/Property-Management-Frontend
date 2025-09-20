@@ -1,261 +1,149 @@
 @import "tailwindcss";
 
 /* ========================
-   Color variables (Light + Dark)
+   Dashboard Color System
+   Light + Dark Themes
+   Follows 60-30-10 Rule
    ======================== */
 
-/* Light theme defaults (dominant 60% = background) */
+/* ---------- Light Theme ---------- */
 :root,
 [data-theme="light"] {
-  /* Backgrounds */
-  --color-background: 249 250 251;    /* very light warm gray (60%) */
-  --color-surface: 244 246 247;       /* surface / cards (30%) */
-  --color-surface-muted: 250 250 250;
-  --color-surface-hover: 238 242 243;
+  /* Backgrounds & surfaces */
+  --color-background: 250 250 250;   /* #FAFAFA */
+  --color-surface: 255 255 255;      /* #FFFFFF */
+  --color-surface-muted: 248 250 252;/* #F8FAFC */
+  --color-surface-hover: 229 231 235;/* #E5E7EB */
 
-  /* Brand primary (accent 10%) - muted teal */
-  --color-primary: 12 97 92;         /* muted teal */
-  --color-primary-hover: 9 78 74;
-  --color-primary-muted: 224 242 241;
+  /* Primary */
+  --color-primary: 37 99 235;        /* #2563EB */
+  --color-primary-hover: 29 78 216;  /* #1D4ED8 */
+  --color-primary-muted: 219 234 254;/* #DBEAFE */
 
-  /* Secondary accent - terracotta */
-  --color-accent2: 177 95 72;
-  --color-accent2-hover: 153 76 59;
-  --color-accent2-muted: 252 237 233;
+  /* Neutral */
+  --color-neutral: 107 114 128;      /* #6B7280 */
+  --color-neutral-hover: 75 85 99;   /* #4B5563 */
+  --color-neutral-muted: 229 231 235;/* #E5E7EB */
 
-  /* Neutral / text */
-  --color-neutral: 17 24 39;
-  --color-neutral-muted: 75 85 99;
-  --color-neutral-hover: 23 23 23;
+  /* Status */
+  --color-success: 34 197 94;        /* #22C55E */
+  --color-success-hover: 21 128 61;  /* #15803D */
+  --color-success-muted: 220 252 231;/* #DCFCE7 */
 
-  /* Support / state */
-  --color-success: 22 163 74;
-  --color-success-hover: 21 128 61;
-  --color-success-muted: 220 252 231;
+  --color-warning: 245 158 11;       /* #F59E0B */
+  --color-warning-hover: 217 119 6;  /* #D97706 */
+  --color-warning-muted: 254 243 199;/* #FEF3C7 */
 
-  --color-error: 185 28 28;
-  --color-error-hover: 153 24 24;
-  --color-error-muted: 254 202 202;
+  --color-error: 239 68 68;          /* #EF4444 */
+  --color-error-hover: 220 38 38;    /* #DC2626 */
+  --color-error-muted: 254 226 226;  /* #FEE2E2 */
 
-  --color-warning: 161 98 7;
-  --color-warning-hover: 133 77 4;
-  --color-warning-muted: 255 249 231;
-
-  --color-info: 3 105 161;
-  --color-info-hover: 2 81 125;
-  --color-info-muted: 224 242 254;
-
-  /* Borders */
-  --color-border: 226 232 240;
-  --color-border-strong: 156 163 175;
-  --color-border-muted: 245 247 248;
-  --color-border-hover: 148 163 184;
+  --color-info: 59 130 246;          /* #3B82F6 */
+  --color-info-hover: 37 99 235;     /* #2563EB */
+  --color-info-muted: 219 234 254;   /* #DBEAFE */
 
   /* Text */
-  --color-text-primary: 17 24 39;
-  --color-text-secondary: 63 72 83;
-  --color-text-muted: 107 114 128;
-  --color-text-subtle: 148 163 184;
-  --color-text-inverse: 255 255 255;
+  --color-text-primary: 26 26 26;    /* #1A1A1A */
+  --color-text-secondary: 107 114 128;/* #6B7280 */
+  --color-text-muted: 156 163 175;   /* #9CA3AF */
+  --color-text-inverse: 255 255 255; /* #FFFFFF */
 
-  /* Disabled / focus */
-  --color-disabled: 229 231 235;
-  --color-disabled-text: 156 163 175;
+  /* Borders */
+  --color-border: 229 231 235;       /* #E5E7EB */
+  --color-border-strong: 209 213 219;/* #D1D5DB */
+  --color-border-muted: 243 244 246; /* #F3F4F6 */
+  --color-border-hover: 156 163 175; /* #9CA3AF */
+
+  /* Disabled */
+  --color-disabled: 243 244 246;     /* #F3F4F6 */
+  --color-disabled-text: 156 163 175;/* #9CA3AF */
+
+  /* Focus */
+  --color-focus: 37 99 235;          /* #2563EB */
+}
+
+/* ---------- Dark Theme ---------- */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --color-background: 15 15 15;      /* #0F0F0F */
+  --color-surface: 26 26 26;         /* #1A1A1A */
+  --color-surface-muted: 17 24 39;   /* #111827 */
+  --color-surface-hover: 55 65 81;   /* #374151 */
+
+  /* Primary */
+  --color-primary: 59 130 246;       /* #3B82F6 */
+  --color-primary-hover: 37 99 235;  /* #2563EB */
+  --color-primary-muted: 29 78 216;  /* #1D4ED8 */
+
+  /* Neutral */
+  --color-neutral: 156 163 175;      /* #9CA3AF */
+  --color-neutral-hover: 229 231 235;/* #E5E7EB */
+  --color-neutral-muted: 55 65 81;   /* #374151 */
+
+  /* Status */
+  --color-success: 34 197 94;        /* Bright green */
+  --color-success-hover: 21 128 61;
+  --color-success-muted: 22 101 52;
+
+  --color-warning: 245 158 11;
+  --color-warning-hover: 217 119 6;
+  --color-warning-muted: 120 53 15;
+
+  --color-error: 239 68 68;
+  --color-error-hover: 185 28 28;
+  --color-error-muted: 127 29 29;
+
+  --color-info: 59 130 246;
+  --color-info-hover: 37 99 235;
+  --color-info-muted: 30 64 175;
+
+  /* Text */
+  --color-text-primary: 249 250 251; /* #F9FAFB */
+  --color-text-secondary: 209 213 219;/* #D1D5DB */
+  --color-text-muted: 156 163 175;   /* #9CA3AF */
+  --color-text-inverse: 0 0 0;       /* Black */
+
+  /* Borders */
+  --color-border: 55 65 81;
+  --color-border-strong: 75 85 99;
+  --color-border-muted: 31 41 55;
+  --color-border-hover: 156 163 175;
+
+  /* Disabled */
+  --color-disabled: 31 41 55;
+  --color-disabled-text: 107 114 128;
+
+  /* Focus */
   --color-focus: 59 130 246;
 }
 
-/* Dark theme overrides (swap backgrounds / surfaces etc.) */
-[data-theme="dark"] {
-  --color-background: 16 20 25;
-  --color-surface: 24 28 33;
-  --color-surface-muted: 34 39 46;
-  --color-surface-hover: 40 46 55;
-
-  --color-primary: 50 150 142;
-  --color-primary-hover: 40 120 113;
-  --color-primary-muted: 17 57 53;
-
-  --color-accent2: 196 116 91;
-  --color-accent2-hover: 170 97 76;
-  --color-accent2-muted: 72 33 25;
-
-  --color-neutral: 245 248 250;
-  --color-neutral-muted: 203 213 225;
-  --color-neutral-hover: 234 238 244;
-
-  --color-success: 34 197 94;
-  --color-success-hover: 22 163 74;
-  --color-success-muted: 10 42 21;
-
-  --color-error: 248 113 113;
-  --color-error-hover: 239 68 68;
-  --color-error-muted: 78 24 24;
-
-  --color-warning: 234 179 8;
-  --color-warning-hover: 202 138 4;
-  --color-warning-muted: 88 46 10;
-
-  --color-info: 56 189 248;
-  --color-info-hover: 2 132 199;
-  --color-info-muted: 7 30 41;
-
-  --color-border: 38 46 56;
-  --color-border-strong: 60 71 86;
-  --color-border-muted: 24 28 33;
-  --color-border-hover: 80 92 112;
-
-  --color-text-primary: 243 244 246;
-  --color-text-secondary: 209 213 219;
-  --color-text-muted: 156 163 175;
-  --color-text-subtle: 107 114 128;
-  --color-text-inverse: 0 0 0;
-
-  --color-disabled: 55 65 81;
-  --color-disabled-text: 99 113 131;
-  --color-focus: 96 165 250;
-}
-
-/* ========================
-   Base utilities & typography
-   ======================== */
-
-/* Import fonts in your index.html or use @import here (Inter & Merriweather via Google Fonts example):
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet"> */
-
-:root {
-  --fw-regular: 400;
-  --fw-medium: 500;
-  --fw-semibold: 600;
-  --fw-bold: 700;
-}
-
-/* Base HTML */
-html {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  font-size: 16px; /* base */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: rgb(var(--color-text-primary) / 1);
-  background: rgb(var(--color-background) / 1);
-}
-
-/* Body base spacing & soft antialiasing */
-body {
-  line-height: 1.5;
-  margin: 0;
-  background: inherit;
-  color: inherit;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Headings: use serif for contrast */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Merriweather", Georgia, serif;
-  color: rgb(var(--color-text-primary) / 1);
-  margin: 0 0 0.5rem 0;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-}
-
-/* Heading sizes */
-h1 { font-size: 2.25rem; }   /* 36px */
-h2 { font-size: 1.75rem; }   /* 28px */
-h3 { font-size: 1.375rem; }  /* 22px */
-h4 { font-size: 1.125rem; }  /* 18px */
-h5 { font-size: 1rem; }      /* 16px */
-h6 { font-size: 0.875rem; }  /* 14px */
-
-/* Paragraph / small / lead */
-p { margin: 0 0 1rem 0; font-size: 1rem; color: rgb(var(--color-text-secondary) / 1); }
-.lead { font-size: 1.125rem; color: rgb(var(--color-text-primary) / 1); }
-
-/* Links / interactive */
-a {
-  color: rgb(var(--color-primary) / 1);
-  text-decoration: none;
-}
-a:hover { color: rgb(var(--color-primary-hover) / 1); text-decoration: underline; }
-
-/* Buttons (basic utility example) */
-.btn {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap: .5rem;
-  padding: .5rem .875rem;
-  border-radius: .5rem;
+/* ---------- Components ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
   font-weight: 600;
-  background: rgb(var(--color-primary) / 1);
-  color: rgb(var(--color-text-inverse) / 1);
-  border: 1px solid rgba(0,0,0,0); /* no strong border by default */
+  line-height: 1;
+  letter-spacing: 0.01em;
 }
-.btn:hover { background: rgb(var(--color-primary-hover) / 1); }
+.badge-success { background: rgb(var(--color-success-muted)); color: rgb(var(--color-success)); }
+.badge-warning { background: rgb(var(--color-warning-muted)); color: rgb(var(--color-warning)); }
+.badge-error   { background: rgb(var(--color-error-muted));   color: rgb(var(--color-error)); }
+.badge-info    { background: rgb(var(--color-info-muted));    color: rgb(var(--color-info)); }
 
-/* Disabled state utility */
-.is-disabled, .btn:disabled {
-  background: rgb(var(--color-disabled) / 1);
-  color: rgb(var(--color-disabled-text) / 1);
-  cursor: not-allowed;
-  opacity: .95;
+/* ---------- Scrollbars ---------- */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-border) / 0.6) transparent;
 }
-
-/* Cards / surfaces */
-.card {
-  background: rgb(var(--color-surface) / 1);
-  border: 1px solid rgb(var(--color-border) / 1);
-  border-radius: .75rem;
-  box-shadow: 0 6px 18px -6px rgba(17,24,39,0.08);
-  padding: 1rem;
+.custom-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-border) / 0.5);
+  border-radius: 9999px;
 }
-
-/* Subtle hover for surfaces */
-.card:hover { background: rgb(var(--color-surface-hover) / 1); }
-
-/* Focus ring utility */
-:focus {
-  outline: 2px solid rgb(var(--color-focus) / 0.15);
-  box-shadow: 0 0 0 4px rgb(var(--color-focus) / 0.12);
-  border-radius: .375rem;
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-primary) / 0.7);
 }
-
-/* Side navigation recommended classes (example) */
-.side-nav {
-  width: 260px;
-  background: rgb(var(--color-surface) / 1);  /* nav = surface (30%) */
-  border-right: 1px solid rgb(var(--color-border) / 1);
-  color: rgb(var(--color-text-secondary) / 1);
-  padding: 12px;
-}
-.side-nav a {
-  display:flex;
-  gap: 12px;
-  align-items:center;
-  padding: 10px;
-  border-radius: 8px;
-  color: inherit;
-  text-decoration:none;
-}
-.side-nav a:hover { background: rgb(var(--color-surface-hover) / 1); }
-.side-nav a.active {
-  background: rgba(var(--color-primary) / 0.08); /* subtle primary-tinted surface */
-  color: rgb(var(--color-primary) / 1);
-  box-shadow: inset 4px 0 0 0 rgb(var(--color-primary) / 1); /* left accent */
-}
-
-/* Utility: muted text */
-.text-muted { color: rgb(var(--color-text-muted) / 1); font-size: .9375rem; }
-
-/* Responsive typography (simple example) */
-@media (min-width: 768px) {
-  html { font-size: 17px; }
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
-}
-
-/* Small helpers for states */
-.badge-success { background: rgb(var(--color-success-muted) / 1); color: rgb(var(--color-success) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
-.badge-error   { background: rgb(var(--color-error-muted) / 1);   color: rgb(var(--color-error) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
-.badge-warning { background: rgb(var(--color-warning-muted) / 1); color: rgb(var(--color-warning) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
-.badge-info    { background: rgb(var(--color-info-muted) / 1);    color: rgb(var(--color-info) / 1); padding: 4px 8px; border-radius: 999px; font-weight:600; }
-
-/* End of styles.css */
