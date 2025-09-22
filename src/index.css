@@ -147,3 +147,9 @@
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background: rgb(var(--color-primary) / 0.7);
 }
+
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

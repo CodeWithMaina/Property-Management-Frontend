@@ -5,23 +5,9 @@ import { Loader2 } from "lucide-react";
 
 /**
  * A Lucide icon component type
- * (all icons from lucide-react conform to this signature).
  */
 export type LucideIcon = React.FC<LucideProps>;
 
-/**
- * Props for the Button component
- *
- * - `title` - fallback text if children not provided
- * - `onAction` - function supplied by parent to run when clicked (sync or async)
- * - `variant` - visual style preset
- * - `size` - button size
- * - `leftIcon` / `rightIcon` - optional Lucide icon components
- * - `className` - extra tailwind classes from parent
- * - `loading` - externally controlled loading state
- * - `disabled` - disable the button
- * - `type` - HTML button type (button | submit | reset)
- */
 export type ButtonProps = {
   title?: string;
   onAction?: () => void | Promise<void>;
@@ -38,10 +24,10 @@ export type ButtonProps = {
 };
 
 /**
- * Base classes — mobile-first, semantic tokens used
+ * Base classes
  */
 const baseClass =
-  "inline-flex items-center justify-center gap-2 rounded-2xl font-semibold select-none transition-[box-shadow,transform,opacity] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none";
+  "relative inline-flex items-center justify-center gap-2 rounded-2xl font-semibold select-none transition-all duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none";
 
 const sizeMap: Record<NonNullable<ButtonProps["size"]>, string> = {
   sm: "px-3 py-1.5 text-sm",
@@ -51,15 +37,15 @@ const sizeMap: Record<NonNullable<ButtonProps["size"]>, string> = {
 
 const variantMap: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
-    "bg-primary text-white shadow-sm hover:brightness-95 active:scale-[0.995] focus:ring-primary/40",
+    "bg-primary text-white shadow-sm hover:shadow-md hover:brightness-[0.97] active:scale-[0.985] focus-visible:ring-primary/40",
   ghost:
-    "bg-transparent text-text-primary hover:bg-surface/60 active:scale-[0.995] border-transparent",
+    "bg-transparent text-text-primary hover:bg-surface/70 active:scale-[0.985]",
   outline:
-    "bg-surface text-text-primary border border-border hover:bg-surface/80 active:scale-[0.995]",
+    "bg-surface text-text-primary border border-border hover:bg-surface/80 active:scale-[0.985]",
   danger:
-    "bg-[rgb(var(--color-error)/1)] text-white shadow-sm hover:brightness-95 active:scale-[0.995]",
+    "bg-[rgb(var(--color-error)/1)] text-white shadow-sm hover:shadow-md hover:brightness-95 active:scale-[0.985] focus-visible:ring-[rgb(var(--color-error)/0.4)]",
   success:
-    "bg-[rgb(var(--color-success)/1)] text-white shadow-sm hover:brightness-95 active:scale-[0.995]",
+    "bg-[rgb(var(--color-success)/1)] text-white shadow-sm hover:shadow-md hover:brightness-95 active:scale-[0.985] focus-visible:ring-[rgb(var(--color-success)/0.4)]",
 };
 
 /**
@@ -103,7 +89,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <motion.button
-      whileTap={{ scale: isDisabled ? 1 : 0.985 }}
+      whileTap={{ scale: isDisabled ? 1 : 0.97 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
       initial={false}
       onClick={handleClick}
       type={type}
@@ -112,25 +99,39 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={isDisabled}
       className={`${baseClass} ${sizeClass} ${variantClass} ${className}`}
     >
-      {/* Loading spinner */}
-      {loading ? (
-        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-      ) : (
-        <>
-          {LeftIcon ? <LeftIcon className="h-4 w-4" aria-hidden /> : null}
-        </>
+      {/* Shimmer overlay when loading */}
+      {loading && (
+        <span
+          className="absolute inset-0 rounded-2xl overflow-hidden opacity-40"
+          aria-hidden
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_1.5s_infinite] bg-[length:200%_100%]" />
+        </span>
       )}
 
-      <span className="truncate">{children ?? title}</span>
+      {/* Left Icon or Loader */}
+      {loading ? (
+        <Loader2 className="h-4 w-4 animate-spin shrink-0 z-10" aria-hidden />
+      ) : (
+        LeftIcon && <LeftIcon className="h-4 w-4 shrink-0 z-10" aria-hidden />
+      )}
 
-      {!loading && RightIcon ? <RightIcon className="h-4 w-4" aria-hidden /> : null}
+      {/* Label */}
+      <span className="truncate z-10">{children ?? title}</span>
+
+      {/* Right Icon */}
+      {!loading && RightIcon ? (
+        <RightIcon className="h-4 w-4 shrink-0 z-10" aria-hidden />
+      ) : null}
     </motion.button>
   );
 };
 
 export default Button;
-//==========================================
-      // <Button title="Save" onAction={handleSave} leftIcon={Check} variant="success" />
-      // <Button title="Delete" onAction={handleDelete} leftIcon={Trash} variant="danger" />
-      // <Button title="Outline Button" variant="outline" /> 
-//==========================================
+
+/* =====================================================
+   Usage examples:
+   <Button title="Save" onAction={handleSave} leftIcon={Check} variant="success" />
+   <Button title="Delete" onAction={handleDelete} leftIcon={Trash} variant="danger" />
+   <Button title="Outline Button" variant="outline" />
+===================================================== */
