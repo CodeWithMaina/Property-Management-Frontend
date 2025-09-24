@@ -26,6 +26,7 @@ export const DisplayUnit: React.FC = () => {
   const { data: unit, isLoading, error } = useGetUnitByIdQuery(id || "");
   const [deleteUnit, { isLoading: isDeleting }] = useDeleteUnitMutation();
 
+  console.log(unit)
   const handleDelete = async () => {
     if (!id || !unit) return;
     

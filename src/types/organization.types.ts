@@ -1,5 +1,7 @@
 // organization.types.ts
 import type { BaseEntity, MetadataEntity } from "./base.types";
+import type { Property } from "./property.types";
+import type { UserOrganization } from "./user.types";
 
 export interface Organization extends BaseEntity, MetadataEntity {
   id: string;
@@ -9,21 +11,22 @@ export interface Organization extends BaseEntity, MetadataEntity {
   isActive: boolean;
 }
 
-
-
-
 export interface TOrganization extends BaseEntity, MetadataEntity {
+  id: string;
   name: string;
-  legalName: string;
-  taxId: string;
+  legalName?: string; // Make optional since it might not always be present
+  taxId?: string; // Make optional since it might not always be present
   isActive: boolean;
-  deletedAt?: string;
+  userOrganizations?: UserOrganization[];
+  properties?: Property[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TOrganizationInput extends MetadataEntity {
   name: string;
-  legalName: string;
-  taxId: string;
+  legalName?: string;
+  taxId?: string;
   isActive?: boolean;
 }
 
@@ -37,13 +40,27 @@ export interface TOrganizationQueryParams {
 }
 
 export interface TPaginatedOrganizationsResponse {
+  success: boolean;
+  message: string;
   data: TOrganization[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
+  errorCode: string | null;
+  errors: any | null;
+  meta: {
+    pagination: {
+      total: string;
+      count: number;
+      perPage: number;
+      currentPage: number;
+      totalPages: number;
+      links: {
+        first: string | null;
+        last: string | null;
+        prev: string | null;
+        next: string | null;
+      };
+    };
   };
+  timestamp: string;
 }
 
 export interface TOrganizationUser extends BaseEntity{
@@ -56,17 +73,10 @@ export interface TOrganizationUser extends BaseEntity{
     id: string;
     fullName: string;
     email: string;
-    phone: string;
+    phone?: string; // Make optional
     isActive: boolean;
   };
 }
-
-// export interface TInviteUserInput {
-//   email: string;
-//   role: string;
-//   organizationId: string;
-//   invitedBy: string;
-// }
 
 export interface TOrganizationMembership extends BaseEntity {
   userId: string;

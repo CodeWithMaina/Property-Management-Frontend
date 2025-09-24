@@ -1,19 +1,20 @@
-// src/Dashboard/pages/Admin/UnitManagementPage.tsx
-import React, { useEffect } from "react";
+// src/Dashboard/pages/Admin/OrganizationManagement.tsx
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Breadcrumb } from "../../components/common/Breadcrumb";
+import { useEffect } from "react";
 
-export const UnitManagementPage: React.FC = () => {
+export const OrganizationManagement = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   // Redirect to analytics when the parent route is accessed directly
   useEffect(() => {
-    if (location.pathname === "/admin/units" || 
-        location.pathname === "/admin/units/") {
+    if (location.pathname === "/admin/organizations" || 
+        location.pathname === "/admin/organizations/") {
       navigate("analytics", { replace: true });
     }
   }, [location.pathname, navigate]);
+
   return (
     <div className="p-6 space-y-6">
       {/* Breadcrumb */}
@@ -22,13 +23,13 @@ export const UnitManagementPage: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Unit Management
+          Organization Management
         </h1>
         <button
           onClick={() => navigate("create")}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
         >
-          Create Unit
+          Create Organization
         </button>
       </div>
 
@@ -36,6 +37,7 @@ export const UnitManagementPage: React.FC = () => {
       <div className="flex border-b border-gray-200 dark:border-gray-700">
         <NavLink
           to="analytics"
+          end
           className={({ isActive }) =>
             `px-4 py-2 -mb-px text-sm font-medium transition-colors border-b-2 ${
               isActive
@@ -56,7 +58,7 @@ export const UnitManagementPage: React.FC = () => {
             }`
           }
         >
-          Units List
+          Organizations List
         </NavLink>
       </div>
 

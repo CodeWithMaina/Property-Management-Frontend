@@ -9,7 +9,7 @@ import "./App.css";
 import { Dashboard } from "./pages/Dashboard";
 import { Analytics } from "./Dashboard/pages/Admin/Analytics";
 import { Users } from "./Dashboard/pages/Admin/Users";
-import { Organizations } from "./Dashboard/pages/Admin/Organizations";
+import { OrganizationManagement } from "./Dashboard/pages/Admin/OrganizationManagement";
 import { Properties } from "./Dashboard/pages/Admin/PropertyManagement";
 import { UnitManagementPage } from "./Dashboard/pages/Admin/UnitManagementPage";
 import { Leases } from "./Dashboard/pages/Admin/Leases";
@@ -28,6 +28,12 @@ import { EditProperty } from "./Dashboard/components/properties/EditProperty";
 import { CreateUnit } from "./Dashboard/components/units/CreateUnit";
 import { EditUnit } from "./Dashboard/components/units/EditUnit";
 import { DisplayUnit } from "./Dashboard/components/units/DisplayUnit";
+import { DisplayProperty } from "./Dashboard/components/properties/DisplayProperty";
+import { OrganizationsAnalytics } from "./Dashboard/components/organizations/OrganizationsAnalytics";
+import { OrganizationsList } from "./Dashboard/components/organizations/OrganizationsList";
+import { CreateOrganization } from "./Dashboard/components/organizations/CreateOrganization";
+import { EditOrganization } from "./Dashboard/components/organizations/EditOrganization";
+import { DisplayOrganization } from "./Dashboard/components/organizations/DisplayOrganization";
 
 function ThemeApplier() {
   const resolvedTheme = useSelector(
@@ -60,7 +66,11 @@ function AppContent() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <div className="flex items-center justify-center min-h-screen">Welcome to Property Management System</div>,
+      element: (
+        <div className="flex items-center justify-center min-h-screen">
+          Welcome to Property Management System
+        </div>
+      ),
     },
     {
       path: "/admin",
@@ -77,16 +87,49 @@ function AppContent() {
           element: <Analytics />,
           handle: { breadcrumb: "Analytics" },
         },
-        { 
-          path: "users", 
-          element: <Users />, 
-          handle: { breadcrumb: "Users" } 
+        {
+          path: "users",
+          element: <Users />,
+          handle: { breadcrumb: "Users" },
         },
         {
           path: "organizations",
-          element: <Organizations />,
+          element: <OrganizationManagement />,
           handle: { breadcrumb: "Organizations" },
+          children: [
+            {
+              index: true, // ✅ Default route
+              element: <OrganizationsAnalytics />,
+              handle: { breadcrumb: "Organization Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <OrganizationsAnalytics />,
+              handle: { breadcrumb: "Organization Analytics" },
+            },
+            {
+              path: "list",
+              element: <OrganizationsList />,
+              handle: { breadcrumb: "Organization List" },
+            },
+            {
+              path: "create",
+              element: <CreateOrganization />,
+              handle: { breadcrumb: "Create Organization" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditOrganization />,
+              handle: { breadcrumb: "Edit Organization" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayOrganization />,
+              handle: { breadcrumb: "Display Organization" },
+            },
+          ],
         },
+
         {
           path: "properties",
           element: <Properties />,
@@ -108,6 +151,11 @@ function AppContent() {
               handle: { breadcrumb: "Property List" },
             },
             {
+              path: "display/:id",
+              element: <DisplayProperty />,
+              handle: { breadcrumb: "Display Property" },
+            },
+            {
               path: "create",
               element: <CreateProperty />,
               handle: { breadcrumb: "Create Property" },
@@ -125,7 +173,7 @@ function AppContent() {
           handle: { breadcrumb: "Units" },
           children: [
             {
-              index: true,
+              index: true, // ✅ Default route
               element: <UnitsAnalytics />,
               handle: { breadcrumb: "Unit Analytics" },
             },

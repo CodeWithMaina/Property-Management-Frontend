@@ -37,10 +37,13 @@ export type TPartialPropertyInput = Partial<TPropertyInput>;
 
 export interface TPropertyQueryParams {
   organizationId?: string;
-  isActive?: boolean;
+  isActive?: boolean | null;
   page?: number;
   limit?: number;
   search?: string;
+  name?: string;
+  city?: string;
+  managers?: string;
 }
 
 export interface TPaginatedPropertiesResponse {
@@ -62,3 +65,4 @@ export interface TPropertyStats {
   revenuePotential: number;
   occupancyRate: number;
 }
+

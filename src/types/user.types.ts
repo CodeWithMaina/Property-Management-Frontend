@@ -16,6 +16,8 @@ export interface UserOrganization extends BaseEntity {
   organizationId: string;
   role: UserRoleEnum;
   isPrimary: boolean;
+  isActive: boolean; // Add this if needed
+  user: User; // Add this missing property
 }
 
 export interface PropertyManager extends BaseEntity {

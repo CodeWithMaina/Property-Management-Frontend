@@ -60,10 +60,16 @@ export interface UnitsTableProps {
 export interface TableFooterProps {
   filteredCount: number;
   totalCount: number;
+  currentPage: number;        
+  pageSize: number;          
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
   onExport: () => void;
   onPrint: () => void;
   onResetFilters: () => void;
 }
+
+
 
 export interface ApiUnitsResponse {
   success: boolean;
@@ -319,25 +325,3 @@ export interface CreateUnitFormData {
   status: UnitStatusEnum;
 }
 
-
-
-
-// export interface UnitActionsDropdownProps {
-//   unit: Unit;
-// }
-
-// export interface TableFooterProps {
-//   filteredCount: number;
-//   totalCount: number;
-//   onExport: () => void;
-//   onPrint: () => void;
-//   onResetFilters: () => void;
-// }
-
-// export interface BulkOperationsProps {
-//   selectedCount: number;
-//   onBulkStatusChange: (status: "vacant" | "occupied" | "unavailable" | "reserved") => void;
-//   onExport: () => void;
-//   onPrint: () => void;
-//   onClearSelection: () => void;
-// }

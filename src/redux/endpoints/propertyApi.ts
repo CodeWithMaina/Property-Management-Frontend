@@ -23,7 +23,7 @@ export const propertyApi = createApi({
         const queryParams = new URLSearchParams();
         
         if (params.organizationId) queryParams.append("organizationId", params.organizationId);
-        if (params.isActive !== undefined) queryParams.append("isActive", params.isActive.toString());
+        if (params.isActive !== undefined) queryParams.append("isActive", params?.isActive.toString());
         if (params.page) queryParams.append("page", params.page.toString());
         if (params.limit) queryParams.append("limit", params.limit.toString());
         if (params.search) queryParams.append("search", params.search);
