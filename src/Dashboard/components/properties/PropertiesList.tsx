@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { BulkOperations } from "../common/BulkOperations";
 import { TableFooter } from "../common/TableFooter";
 import { ActionsDropdown } from "../common/ActionsDropdown";
+import { LoadingSpinner } from "../common/LoadingSpinner";
 import {
   useGetPropertiesQuery,
   useDeletePropertyMutation,
@@ -18,7 +19,7 @@ import type {
   TPropertyQueryParams,
 } from "../../../types/property.types";
 import { PropertyFilter } from "./PropertyFilter";
-import { Search, Filter, X } from "lucide-react";
+import { SearchBar } from "../common/SearchBar"; // ✅ Import the new SearchBar
 
 export const PropertiesList: React.FC = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export const PropertiesList: React.FC = () => {
   const [hardDeleteProperty] = useHardDeletePropertyMutation();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilters, setShowFilters] = useState(false); // Fixed variable name
 
   // Extracted properties safely
   const properties: Property[] =
@@ -123,19 +124,11 @@ export const PropertiesList: React.FC = () => {
     );
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (value: string) => {
     setQueryParams((prev) => ({
       ...prev,
       page: 1,
-      search: e.target.value,
-    }));
-  };
-
-  const clearSearch = () => {
-    setQueryParams((prev) => ({
-      ...prev,
-      page: 1,
-      search: "",
+      search: value,
     }));
   };
 
@@ -155,13 +148,24 @@ export const PropertiesList: React.FC = () => {
     toast.success("Filters reset successfully!");
   };
 
+  const toggleFilters = () => {
+    setShowFilters((prev) => !prev);
+  };
+
   /* ============
      Render
      ============ */
-  if (isLoading) return <p>Loading properties...</p>;
+  if (isLoading) return <LoadingSpinner message="Loading properties..." />;
+  
   if (isError) {
     toast.error("Failed to load properties.");
-    return <p>Failed to load properties.</p>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        <p className="text-red-600 dark:text-red-400">
+          Failed to load properties.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -169,55 +173,34 @@ export const PropertiesList: React.FC = () => {
       {/* Header + Search + Filter */}
       <div className="w-full max-w-6xl mx-auto p-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-            Manage Properties
-          </h2>
+          <div>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+              Manage Properties
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              Create and manage your properties and their settings
+            </p>
+          </div>
 
           <div className="flex flex-1 sm:flex-initial items-center gap-3 w-full sm:w-auto">
-            {/* Enhanced Search Bar */}
-            <div className="relative flex-1 sm:w-80">
-              <div className="relative group">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search properties..."
-                  value={queryParams.search}
-                  onChange={handleSearchChange}
-                  className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                />
-                {queryParams.search && (
-                  <button
-                    type="button"
-                    onClick={clearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Enhanced Filter Button */}
-            <button
-              onClick={() => setShowFilter(true)}
-              className="relative px-4 py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200 dark:border-blue-700 rounded-lg text-blue-700 dark:text-blue-300 font-medium transition-all duration-200 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-800/40 dark:hover:to-indigo-800/40 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 group whitespace-nowrap"
-            >
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-                <span className="hidden sm:inline">Filter</span>
-              </div>
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/0 to-indigo-400/0 group-hover:from-blue-400/5 group-hover:to-indigo-400/5 transition-all duration-200 pointer-events-none"></div>
-            </button>
+            {/* ✅ Updated Search Bar with proper props */}
+            <SearchBar
+              searchValue={queryParams.search || ""} // Pass current search value
+              onSearchChange={handleSearchChange}
+              onToggleFilters={toggleFilters}
+              showFilters={showFilters}
+              placeholder="Search properties by name, city, or description..."
+            />
           </div>
         </div>
       </div>
 
       {/* Filter Floating Panel */}
-      {showFilter && (
+      {showFilters && (
         <PropertyFilter
           queryParams={queryParams}
           setQueryParams={setQueryParams}
-          onClose={() => setShowFilter(false)}
+          onClose={() => setShowFilters(false)} // Fixed variable name
         />
       )}
 
@@ -243,21 +226,36 @@ export const PropertiesList: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
           <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium uppercase">
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
                 Select
               </th>
-              <th className="px-4 py-2 text-left text-xs">Name</th>
-              <th className="px-4 py-2 text-left text-xs">Organization</th>
-              <th className="px-4 py-2 text-left text-xs">City</th>
-              <th className="px-4 py-2 text-left text-xs">Managers</th>
-              <th className="px-4 py-2 text-left text-xs">Status</th>
-              <th className="px-4 py-2 text-left text-xs">Actions</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Organization
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                City
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Managers
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
             {properties.map((property) => (
-              <tr key={property.id}>
-                <td className="px-4 py-2">
+              <tr 
+                key={property.id}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <td className="px-4 py-3 whitespace-nowrap">
                   <input
                     type="checkbox"
                     className="checkbox checkbox-sm"
@@ -265,24 +263,30 @@ export const PropertiesList: React.FC = () => {
                     onChange={() => toggleSelection(property.id)}
                   />
                 </td>
-                <td className="px-4 py-2 font-medium">
-                  {property.name}
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {property.description}
-                  </p>
+                <td className="px-4 py-3">
+                  <div className="font-medium text-gray-900 dark:text-white">
+                    {property.name}
+                  </div>
+                  {property.description && (
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {property.description}
+                    </div>
+                  )}
                 </td>
-                <td className="px-4 py-2">{property.organization?.name}</td>
-                <td className="px-4 py-2">
-                  {property.city}, {property.country}
+                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
+                  {property.organization?.name || "—"}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
+                  {property.city ? `${property.city}, ${property.country}` : "—"}
+                </td>
+                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
                   {property.propertyManagers?.length
                     ? property.propertyManagers
                         .map((pm) => pm.user?.fullName)
                         .join(", ")
                     : "—"}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 text-xs rounded-full font-medium ${
                       property.isActive
@@ -293,7 +297,7 @@ export const PropertiesList: React.FC = () => {
                     {property.isActive ? "Active" : "Inactive"}
                   </span>
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <ActionsDropdown
                     actions={[
                       {
@@ -330,6 +334,14 @@ export const PropertiesList: React.FC = () => {
             ))}
           </tbody>
         </table>
+
+        {properties.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500 dark:text-gray-400">
+              No properties found.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Table Footer */}

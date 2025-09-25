@@ -4,11 +4,15 @@ import themeReducer from "../slice/themeSlice";
 import { unitsApi } from "../endpoints/unitApi";
 import { propertyApi } from "../endpoints/propertyApi";
 import { organizationApi } from "../endpoints/organizationApi";
+import { leaseApi } from "../endpoints/leaseApi";
+import { amenityApi } from "../endpoints/amenityApi";
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     [unitsApi.reducerPath]: unitsApi.reducer,
+    [leaseApi.reducerPath]: leaseApi.reducer,
+    [amenityApi.reducerPath]: amenityApi.reducer,
     [propertyApi.reducerPath]: propertyApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
   },
@@ -20,6 +24,8 @@ export const store = configureStore({
       },
     }).concat(
       unitsApi.middleware,
+      leaseApi.middleware,
+      amenityApi.middleware,
       propertyApi.middleware,
       organizationApi.middleware
     ),

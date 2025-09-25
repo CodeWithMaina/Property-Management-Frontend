@@ -1,18 +1,13 @@
 import type { BaseEntity, MetadataEntity } from "./base.types";
 
-export interface SearchBarProps {
+export type SearchBarProps = {
   searchValue: string;
   onSearchChange: (value: string) => void;
+  onSearchAction?: (value: string) => void;
   onToggleFilters: () => void;
   showFilters: boolean;
-}
-
-
-
-
-
-
-
+  placeholder?: string;
+};
 
 export interface TPaginationParams {
   page?: number;

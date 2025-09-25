@@ -1,3 +1,4 @@
+// lease.types.ts - Updated to match your API response
 import type { BaseEntity, MetadataEntity } from "./base.types";
 import type { LeaseStatusEnum } from "./enum.types";
 import type { Invoice } from "./invoice.types";
@@ -22,13 +23,26 @@ export interface Lease extends BaseEntity, MetadataEntity {
   billingCurrency: string;
   lateFeePercent?: string;
   notes?: string;
+  // Add nested objects from your API response
+  organization?: {
+    id: string;
+    name: string;
+  };
+  property?: {
+    id: string;
+    name: string;
+  };
+  unit?: {
+    id: string;
+    code: string;
+  };
 }
 
-
-export interface TLeaseInput extends Omit<Lease, 'id' | 'createdAt' | 'updatedAt' | 'tenant'> {
-  tenantUserId: string; // Keep tenantUserId for creation
+export interface TLeaseInput extends Omit<Lease, 'id' | 'createdAt' | 'updatedAt' | 'tenant' | 'organization' | 'property' | 'unit'> {
+  tenantUserId: string;
 }
-export interface TPartialLeaseInput extends Partial<Omit<Lease, 'id' | 'createdAt' | 'updatedAt' | 'tenant'>> {
+
+export interface TPartialLeaseInput extends Partial<Omit<Lease, 'id' | 'createdAt' | 'updatedAt' | 'tenant' | 'organization' | 'property' | 'unit'>> {
   tenantUserId?: string;
 }
 
@@ -37,6 +51,7 @@ export interface TLeaseQueryParams {
   propertyId?: string;
   tenantUserId?: string;
   status?: string;
+  search?: string; // Add search property
   page?: number;
   limit?: number;
 }
@@ -63,10 +78,23 @@ export interface TLeaseWithDetails extends Lease {
 
 export interface TPaginatedLeasesResponse {
   data: Lease[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+  pagination?: { // Make pagination optional to match your API
+    total: number | string;
+    count: number;
+    perPage: number;
+    currentPage: number;
+    totalPages: number;
+    links?: {
+      first: string | null;
+      last: string | null;
+      prev: string | null;
+      next: string | null;
+    };
+  };
+  total?: number; // Alternative pagination field
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface TLeaseBalance {

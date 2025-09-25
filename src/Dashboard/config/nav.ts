@@ -11,6 +11,7 @@ import {
   Wrench,
   FileText,
   Settings,
+  ToolCaseIcon,
 } from "lucide-react";
 
 export type NavItem = {
@@ -33,10 +34,11 @@ export const navGroups: NavGroup[] = [
   {
     name: "Management",
     items: [
+      { name: "Users", path: "/admin/users", icon: Users },
       { name: "Organizations", path: "/admin/organizations", icon: Landmark },
       { name: "Properties", path: "/admin/properties", icon: Building2 },
       { name: "Units", path: "/admin/units", icon: Grid3x3 },
-      { name: "Users", path: "/admin/users", icon: Users },
+      { name: "Amenities", path: "/admin/amenities", icon: ToolCaseIcon },
     ],
   },
   {

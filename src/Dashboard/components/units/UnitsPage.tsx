@@ -187,6 +187,14 @@ export const UnitsPage: React.FC = () => {
     toast.success(`Printed labels for ${selectedUnits.length} units`);
   };
 
+  const toggleFilters = () => {
+    setShowFilters((prev) => !prev);
+  };
+
+  const handleSearchChange = (value: string) => {
+    handleFilterChange("search", value);
+  };
+
   const loading = isLoading || organizationsLoading || propertiesLoading;
 
   if (loading) {
@@ -237,9 +245,10 @@ export const UnitsPage: React.FC = () => {
       <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6 shadow-sm">
         <SearchBar
           searchValue={filterOptions.search}
-          onSearchChange={(value) => handleFilterChange("search", value)}
-          onToggleFilters={() => setShowFilters(!showFilters)}
+          onSearchChange={handleSearchChange}
+          onToggleFilters={toggleFilters}
           showFilters={showFilters}
+          placeholder="Search units by code, property, tenant, or organization..."
         />
 
         {/* Advanced Filters Panel */}

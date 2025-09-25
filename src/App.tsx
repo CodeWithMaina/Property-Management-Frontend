@@ -8,16 +8,13 @@ import "./App.css";
 
 import { Dashboard } from "./pages/Dashboard";
 import { Analytics } from "./Dashboard/pages/Admin/Analytics";
-import { Users } from "./Dashboard/pages/Admin/Users";
 import { OrganizationManagement } from "./Dashboard/pages/Admin/OrganizationManagement";
 import { Properties } from "./Dashboard/pages/Admin/PropertyManagement";
 import { UnitManagementPage } from "./Dashboard/pages/Admin/UnitManagementPage";
-import { Leases } from "./Dashboard/pages/Admin/Leases";
-import { Invoices } from "./Dashboard/pages/Admin/Invoices";
+import { LeasesManagement } from "./Dashboard/pages/Admin/LeasesManagement";
 import { Maintenance } from "./Dashboard/pages/Admin/Maintenance";
 import { Settings } from "./Dashboard/pages/Admin/Settings";
 import { Reports } from "./Dashboard/pages/Admin/Reports";
-import { Payments } from "./Dashboard/pages/Admin/Payments";
 import { store, type RootState } from "./redux/store/store";
 import { UnitsAnalytics } from "./Dashboard/components/units/UnitsAnalytics";
 import { UnitsPage } from "./Dashboard/components/units/UnitsPage";
@@ -34,6 +31,36 @@ import { OrganizationsList } from "./Dashboard/components/organizations/Organiza
 import { CreateOrganization } from "./Dashboard/components/organizations/CreateOrganization";
 import { EditOrganization } from "./Dashboard/components/organizations/EditOrganization";
 import { DisplayOrganization } from "./Dashboard/components/organizations/DisplayOrganization";
+import { UsersManagement } from "./Dashboard/pages/Admin/UsersManagement";
+import { UsersAnalytics } from "./Dashboard/components/users/UsersAnalytics";
+import { UsersList } from "./Dashboard/components/users/UsersList";
+import { CreateUser } from "./Dashboard/components/users/CreateUser";
+import { EditUser } from "./Dashboard/components/users/EditUser";
+import { DisplayUser } from "./Dashboard/components/users/DisplayUser";
+import { LeasesAnalytics } from "./Dashboard/components/leases/LeasesAnalytics";
+import { LeasesList } from "./Dashboard/components/leases/LeasesList";
+import { CreateLease } from "./Dashboard/components/leases/CreateLease";
+import { EditLease } from "./Dashboard/components/leases/EditLease";
+import { DisplayLease } from "./Dashboard/components/leases/DisplayLease";
+import { PaymentsManagement } from "./Dashboard/pages/Admin/PaymentsManagement";
+import { PaymentsAnalytics } from "./Dashboard/components/payments/PaymentsAnalytics";
+import { PaymentsList } from "./Dashboard/components/payments/PaymentsList";
+import { CreatePayment } from "./Dashboard/components/payments/CreatePayment";
+import { EditPayment } from "./Dashboard/components/payments/EditPayment";
+import { DisplayPayment } from "./Dashboard/components/payments/DisplayPayment";
+import { InvoicesManagement } from "./Dashboard/pages/Admin/InvoicesManagement";
+import { InvoicesAnalytics } from "./Dashboard/components/invoices/InvoicesAnalytics";
+import { InvoicesList } from "./Dashboard/components/invoices/InvoicesList";
+import { CreateInvoice } from "./Dashboard/components/invoices/CreateInvoice";
+import { EditInvoice } from "./Dashboard/components/invoices/EditInvoice";
+import { DisplayInvoice } from "./Dashboard/components/invoices/DisplayInvoice";
+import { AmenityManagement } from "./Dashboard/pages/Admin/AmenityManagement";
+import { AmenitiesList } from "./Dashboard/components/amenities/AmenitiesList";
+import { CreateAmenity } from "./Dashboard/components/amenities/CreateAmenity";
+import { EditAmenity } from "./Dashboard/components/amenities/EditAmenity";
+import { DisplayAmenity } from "./Dashboard/components/amenities/DisplayAmenity";
+import { AmenitiesAnalytics } from "./Dashboard/components/amenities/AmenitiesAnalytics";
+import { Toaster } from "react-hot-toast";
 
 function ThemeApplier() {
   const resolvedTheme = useSelector(
@@ -89,8 +116,40 @@ function AppContent() {
         },
         {
           path: "users",
-          element: <Users />,
+          element: <UsersManagement />,
           handle: { breadcrumb: "Users" },
+          children: [
+            {
+              index: true, // ✅ Default route
+              element: <UsersAnalytics />,
+              handle: { breadcrumb: "User Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <UsersAnalytics />,
+              handle: { breadcrumb: "User Analytics" },
+            },
+            {
+              path: "list",
+              element: <UsersList />,
+              handle: { breadcrumb: "User List" },
+            },
+            {
+              path: "create",
+              element: <CreateUser />,
+              handle: { breadcrumb: "Create User" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditUser />,
+              handle: { breadcrumb: "Edit User" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayUser />,
+              handle: { breadcrumb: "Display User" },
+            },
+          ],
         },
         {
           path: "organizations",
@@ -206,18 +265,151 @@ function AppContent() {
         },
         {
           path: "leases",
-          element: <Leases />,
+          element: <LeasesManagement />,
           handle: { breadcrumb: "Leases" },
+          children: [
+            {
+              index: true,
+              element: <LeasesAnalytics />,
+              handle: { breadcrumb: "Lease Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <LeasesAnalytics />,
+              handle: { breadcrumb: "Lease Analytics" },
+            },
+            {
+              path: "list",
+              element: <LeasesList />,
+              handle: { breadcrumb: "Lease List" },
+            },
+            {
+              path: "create",
+              element: <CreateLease />,
+              handle: { breadcrumb: "Create Lease" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditLease />,
+              handle: { breadcrumb: "Edit Lease" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayLease />,
+              handle: { breadcrumb: "Display Lease" },
+            },
+          ],
         },
         {
           path: "payments",
-          element: <Payments />,
+          element: <PaymentsManagement />,
           handle: { breadcrumb: "Payments" },
+          children: [
+            {
+              index: true,
+              element: <PaymentsAnalytics />,
+              handle: { breadcrumb: "Payment Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <PaymentsAnalytics />,
+              handle: { breadcrumb: "Payment Analytics" },
+            },
+            {
+              path: "list",
+              element: <PaymentsList />,
+              handle: { breadcrumb: "Payment List" },
+            },
+            {
+              path: "create",
+              element: <CreatePayment />,
+              handle: { breadcrumb: "Create Payment" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditPayment />,
+              handle: { breadcrumb: "Edit Payment" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayPayment />,
+              handle: { breadcrumb: "Display Payment" },
+            },
+          ],
         },
         {
           path: "invoices",
-          element: <Invoices />,
+          element: <InvoicesManagement />,
           handle: { breadcrumb: "Invoices" },
+          children: [
+            {
+              index: true,
+              element: <InvoicesAnalytics />,
+              handle: { breadcrumb: "Invoice Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <InvoicesAnalytics />,
+              handle: { breadcrumb: "Invoice Analytics" },
+            },
+            {
+              path: "list",
+              element: <InvoicesList />,
+              handle: { breadcrumb: "Invoice List" },
+            },
+            {
+              path: "create",
+              element: <CreateInvoice />,
+              handle: { breadcrumb: "Create Invoice" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditInvoice />,
+              handle: { breadcrumb: "Edit Invoice" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayInvoice />,
+              handle: { breadcrumb: "Display Invoice" },
+            },
+          ],
+        },
+        {
+          path: "amenities",
+          element: <AmenityManagement />,
+          handle: { breadcrumb: "Organizations" },
+          children: [
+            {
+              index: true,
+              element: <AmenitiesAnalytics />,
+              handle: { breadcrumb: "Organization Analytics" },
+            },
+            {
+              path: "analytics",
+              element: <AmenitiesAnalytics />,
+              handle: { breadcrumb: "Organization Analytics" },
+            },
+            {
+              path: "list",
+              element: <AmenitiesList />,
+              handle: { breadcrumb: "Organization List" },
+            },
+            {
+              path: "create",
+              element: <CreateAmenity />,
+              handle: { breadcrumb: "Create Organization" },
+            },
+            {
+              path: "edit/:id",
+              element: <EditAmenity />,
+              handle: { breadcrumb: "Edit Organization" },
+            },
+            {
+              path: "display/:id",
+              element: <DisplayAmenity />,
+              handle: { breadcrumb: "Display Organization" },
+            },
+          ],
         },
         {
           path: "maintenance",
@@ -245,6 +437,24 @@ function AppContent() {
     >
       <ThemeApplier />
       <RouterProvider router={router} />
+
+      {/* 🔥 Global Toaster mounted once here */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background:
+              document.documentElement.getAttribute("data-theme") === "dark"
+                ? "#1e293b"
+                : "#f8fafc",
+            color:
+              document.documentElement.getAttribute("data-theme") === "dark"
+                ? "#f8fafc"
+                : "#1e293b",
+          },
+        }}
+      />
     </div>
   );
 }
