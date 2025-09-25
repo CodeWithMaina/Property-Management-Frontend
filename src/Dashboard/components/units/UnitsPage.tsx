@@ -1,55 +1,65 @@
+// UnitsPage.tsx - Updated with modal functionality
 import React, { useState, useMemo, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useGetUnitsQuery } from "../../../redux/endpoints/unitApi";
 import { useGetOrganizationsQuery } from "../../../redux/endpoints/organizationApi";
 import { useGetPropertiesQuery } from "../../../redux/endpoints/propertyApi";
-import type {
-  FilterOptions,
-} from "../../../types/unit.types";
-import {
-  transformUnitData,
-} from "../../../util/typeConversion";
+import type { FilterOptions } from "../../../types/unit.types";
+import { transformUnitData } from "../../../util/typeConversion";
 import { SearchBar } from "../../components/common/SearchBar";
 import { FilterPanel } from "../../components/units/FilterPanel";
 import { BulkOperations } from "../common/BulkOperations";
 import { UnitsTable } from "../../components/units/UnitsTable";
 import { TableFooter } from "../common/TableFooter";
 
+// ============ CONSTANTS ============
+const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_CURRENT_PAGE = 1;
+const DEFAULT_RENT_RANGE: [number, number] = [0, 100000];
+
 // ============ MAIN COMPONENT ============
 export const UnitsPage: React.FC = () => {
-  const [showFilters, setShowFilters] = useState(false);
+  // ============ STATE MANAGEMENT ============
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
   const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(DEFAULT_CURRENT_PAGE);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     property: null,
     status: [],
     organization: null,
-    rent: [0, 100000],
+    rent: DEFAULT_RENT_RANGE,
     search: "",
   });
 
-  // Fetch organizations and properties for filters
-  const { data: organizationsResponse, isLoading: organizationsLoading } = 
-    useGetOrganizationsQuery({ page: 1, limit: 100 });
-  
-  const { data: propertiesResponse, isLoading: propertiesLoading } = 
-    useGetPropertiesQuery({ 
-      organizationId: filterOptions.organization || undefined,
-      page: 1, 
-      limit: 100 
+  // ============ API QUERIES ============
+  const { data: organizationsResponse, isLoading: organizationsLoading } =
+    useGetOrganizationsQuery({
+      page: DEFAULT_CURRENT_PAGE,
+      limit: 100,
     });
 
-  // Fetch units with filtering
+  const { data: propertiesResponse, isLoading: propertiesLoading } =
+    useGetPropertiesQuery({
+      organizationId: filterOptions.organization || undefined,
+      page: DEFAULT_CURRENT_PAGE,
+      limit: 100,
+    });
+
   const { data, error, isLoading, refetch } = useGetUnitsQuery({
     organizationId: filterOptions.organization || undefined,
     propertyId: filterOptions.property || undefined,
-    status: filterOptions.status.length > 0 ? filterOptions.status.join(',') : undefined,
+    status:
+      filterOptions.status.length > 0
+        ? filterOptions.status.join(",")
+        : undefined,
     search: filterOptions.search || undefined,
-    page: 1,
-    limit: 100,
-    isActive: true
+    page: currentPage,
+    limit: pageSize,
+    isActive: true,
   });
 
-  // Debounced refetch when filters change
+  // ============ SIDE EFFECTS ============
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       refetch();
@@ -58,35 +68,53 @@ export const UnitsPage: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [filterOptions, refetch]);
 
-  // Transform API data to match component expectations
+  useEffect(() => {
+    setCurrentPage(DEFAULT_CURRENT_PAGE);
+  }, [filterOptions, pageSize]);
+
+  // Close modal when clicking outside
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showFilterModal) {
+        setShowFilterModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showFilterModal]);
+
+  // ============ DATA TRANSFORMATION ============
   const transformedUnits = useMemo(() => {
     if (!data?.data) return [];
     return data.data.map(transformUnitData);
   }, [data]);
 
-  const organizations = useMemo(() => 
-    organizationsResponse?.data || [], 
+  const organizations = useMemo(
+    () => organizationsResponse?.data || [],
     [organizationsResponse]
   );
 
-  const properties = useMemo(() => 
-    propertiesResponse?.data || [], 
+  const properties = useMemo(
+    () => propertiesResponse?.data || [],
     [propertiesResponse]
   );
 
-  const filteredProperties = useMemo(() => 
-    filterOptions.organization 
-      ? properties.filter(prop => prop.organizationId === filterOptions.organization)
-      : properties,
+  const filteredProperties = useMemo(
+    () =>
+      filterOptions.organization
+        ? properties.filter(
+            (prop) => prop.organizationId === filterOptions.organization
+          )
+        : properties,
     [properties, filterOptions.organization]
   );
 
-  // Filter units based on filter options (client-side filtering for additional criteria)
   const filteredUnits = useMemo(() => {
     if (!transformedUnits) return [];
 
     return transformedUnits.filter((unit) => {
-      // Search filter (client-side for better UX)
+      // Search filter (client-side for better UX with tenant data)
       if (filterOptions.search) {
         const searchTerm = filterOptions.search.toLowerCase();
         const matchesCode = unit.code.toLowerCase().includes(searchTerm);
@@ -97,7 +125,7 @@ export const UnitsPage: React.FC = () => {
           .toLowerCase()
           .includes(searchTerm);
 
-        // Check tenant names
+        // Check tenant names and emails
         const matchesTenant = unit.leases.some(
           (lease) =>
             lease.tenant.fullName.toLowerCase().includes(searchTerm) ||
@@ -117,31 +145,29 @@ export const UnitsPage: React.FC = () => {
     });
   }, [transformedUnits, filterOptions.search, filterOptions.rent]);
 
-  // Handle filter changes
+  // ============ EVENT HANDLERS ============
   const handleFilterChange = (key: keyof FilterOptions, value: any) => {
     setFilterOptions((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Reset all filters
   const resetFilters = () => {
     setFilterOptions({
       property: null,
       status: [],
       organization: null,
-      rent: [0, 100000],
+      rent: DEFAULT_RENT_RANGE,
       search: "",
     });
+    setCurrentPage(DEFAULT_CURRENT_PAGE);
     toast.success("Filters reset");
   };
 
-  // Toggle unit selection
   const toggleUnitSelection = (id: string) => {
     setSelectedUnits((prev) =>
       prev.includes(id) ? prev.filter((unitId) => unitId !== id) : [...prev, id]
     );
   };
 
-  // Select all units
   const toggleSelectAll = () => {
     if (selectedUnits.length === filteredUnits.length) {
       setSelectedUnits([]);
@@ -150,18 +176,23 @@ export const UnitsPage: React.FC = () => {
     }
   };
 
-  // Export to CSV
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize);
+    setCurrentPage(DEFAULT_CURRENT_PAGE);
+  };
+
   const exportToCSV = () => {
     if (filteredUnits.length === 0) {
       toast.error("No units to export");
       return;
     }
-
-    // In a real app, this would generate an actual CSV file
     toast.success(`Exported ${filteredUnits.length} units to CSV`);
   };
 
-  // Bulk status change
   const bulkStatusChange = (
     status: "vacant" | "occupied" | "unavailable" | "reserved"
   ) => {
@@ -169,32 +200,24 @@ export const UnitsPage: React.FC = () => {
       toast.error("No units selected");
       return;
     }
-
-    // In a real app, this would update the status of selected units
     toast.success(
       `Changed status to ${status} for ${selectedUnits.length} units`
     );
   };
 
-  // Print labels
   const printLabels = () => {
     if (selectedUnits.length === 0) {
       toast.error("No units selected");
       return;
     }
-
-    // In a real app, this would print labels for selected units
     toast.success(`Printed labels for ${selectedUnits.length} units`);
-  };
-
-  const toggleFilters = () => {
-    setShowFilters((prev) => !prev);
   };
 
   const handleSearchChange = (value: string) => {
     handleFilterChange("search", value);
   };
 
+  // ============ LOADING AND ERROR STATES ============
   const loading = isLoading || organizationsLoading || propertiesLoading;
 
   if (loading) {
@@ -215,11 +238,25 @@ export const UnitsPage: React.FC = () => {
     );
   }
 
+  // ============ RENDER ============
   return (
-    <div className="container">
+    <div className="container relative">
       <Toaster position="top-right" />
 
-      {/* Header */}
+      {/* Filter Modal */}
+      {showFilterModal && (
+        <FilterPanel
+          filterOptions={filterOptions}
+          onFilterChange={handleFilterChange}
+          onReset={resetFilters}
+          onApply={() => {}}
+          properties={filteredProperties}
+          organizations={organizations}
+          onClose={() => setShowFilterModal(false)}
+        />
+      )}
+
+      {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold">Units</h1>
@@ -227,44 +264,49 @@ export const UnitsPage: React.FC = () => {
             Manage all property units in one place
           </p>
         </div>
+        
+        {/* Filter Badges */}
         <div className="flex items-center gap-2">
-          {(filterOptions.organization || filterOptions.property) && (
-            <div className="badge badge-secondary">
-              {filterOptions.property 
-                ? `Property: ${properties.find(p => p.id === filterOptions.property)?.name}`
-                : filterOptions.organization 
-                  ? `Org: ${organizations.find(o => o.id === filterOptions.organization)?.name}`
-                  : ''
-              }
+          {(filterOptions.organization || filterOptions.property || filterOptions.status.length > 0) && (
+            <div className="flex flex-wrap gap-2">
+              {filterOptions.organization && (
+                <div className="badge badge-secondary badge-lg">
+                  Org: {
+                    organizations.find((o) => o.id === filterOptions.organization)?.name
+                  }
+                </div>
+              )}
+              {filterOptions.property && (
+                <div className="badge badge-primary badge-lg">
+                  Property: {
+                    properties.find((p) => p.id === filterOptions.property)?.name
+                  }
+                </div>
+              )}
+              {filterOptions.status.length > 0 && (
+                <div className="badge badge-accent badge-lg">
+                  Status: {filterOptions.status.join(", ")}
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6 shadow-sm">
-        <SearchBar
-          searchValue={filterOptions.search}
-          onSearchChange={handleSearchChange}
-          onToggleFilters={toggleFilters}
-          showFilters={showFilters}
-          placeholder="Search units by code, property, tenant, or organization..."
-        />
-
-        {/* Advanced Filters Panel */}
-        {showFilters && (
-          <FilterPanel
-            filterOptions={filterOptions}
-            onFilterChange={handleFilterChange}
-            onReset={resetFilters}
-            onApply={() => setShowFilters(false)}
-            properties={filteredProperties}
-            organizations={organizations}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex-1">
+          <SearchBar
+            searchValue={filterOptions.search}
+            onSearchChange={handleSearchChange}
+            onToggleFilters={() => setShowFilterModal(true)}
+            showFilters={showFilterModal}
+            placeholder="Search units by code, property, tenant, or organization..."
           />
-        )}
+        </div>
       </div>
 
-      {/* Bulk Operations */}
+      {/* Bulk Operations Section */}
       <BulkOperations
         selectedCount={selectedUnits.length}
         onBulkStatusChange={bulkStatusChange}
@@ -273,7 +315,7 @@ export const UnitsPage: React.FC = () => {
         onClearSelection={() => setSelectedUnits([])}
       />
 
-      {/* Units Table */}
+      {/* Units Table Section */}
       <UnitsTable
         units={filteredUnits}
         selectedUnits={selectedUnits}
@@ -281,10 +323,14 @@ export const UnitsPage: React.FC = () => {
         onToggleSelectAll={toggleSelectAll}
       />
 
-      {/* Table Footer */}
+      {/* Table Footer Section */}
       <TableFooter
         filteredCount={filteredUnits.length}
         totalCount={transformedUnits.length}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
         onExport={exportToCSV}
         onPrint={printLabels}
         onResetFilters={resetFilters}

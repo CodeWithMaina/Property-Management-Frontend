@@ -82,10 +82,7 @@ export const UnitsTable: React.FC<UnitsTableProps> = ({
                   </td>
                   <td className="p-3">
                     <div className="font-medium">{unit.code}</div>
-                    <div className="text-xs text-gray-500">
-                      {unit.bedrooms} bed, {unit.bathrooms} bath, {unit.sizeSqm}{" "}
-                      m²
-                    </div>
+                    
                   </td>
                   <td className="p-3">
                     <div className="flex items-center gap-2">
@@ -94,9 +91,7 @@ export const UnitsTable: React.FC<UnitsTableProps> = ({
                         <span className="text-sm block">
                           {unit.property.name}
                         </span>
-                        <span className="text-xs text-gray-500">
-                          {unit.property.organization.name}
-                        </span>
+                        
                       </div>
                     </div>
                   </td>
